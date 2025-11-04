@@ -931,10 +931,10 @@ body {
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary) 0%, #059669 100%);
+  background: var(--sidebar-bg);
   color: white;
   border: none;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -946,7 +946,8 @@ body {
 
 .help-button:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  background: var(--sidebar-hover);
 }
 
 .help-button:active {
@@ -988,7 +989,7 @@ body {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary) 0%, #059669 100%);
+  background: var(--sidebar-bg);
   display: flex;
   align-items: center;
   justify-content: center;
