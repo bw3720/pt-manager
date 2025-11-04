@@ -1058,6 +1058,11 @@ body {
   color: white;
 }
 
+.help-contact-icon.blog {
+  background: #03C75A;
+  color: white;
+}
+
 .help-contact-info {
   flex: 1;
   min-width: 0;
