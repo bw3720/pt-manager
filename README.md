@@ -179,29 +179,56 @@ git branch -M main
 git push -u origin main
 ```
 
-#### 2. GitHub Pages 활성화
+#### 2. GitHub Secrets 설정 (중요!)
+
+배포 시 API 키가 필요하므로 GitHub Secrets에 등록해야 합니다.
+
+1. GitHub 저장소 페이지에서 **Settings** 클릭
+2. 왼쪽 메뉴에서 **Secrets and variables** > **Actions** 클릭
+3. **New repository secret** 버튼을 클릭하여 다음 3개의 Secret 추가:
+
+| Name | Value |
+|------|-------|
+| `SUPABASE_URL` | 여러분의 Supabase Project URL |
+| `SUPABASE_ANON_KEY` | 여러분의 Supabase anon key |
+| `OPENAI_API_KEY` | 여러분의 OpenAI API key |
+
+**Secret 추가 방법:**
+- Name 입력 → Secret 입력 → **Add secret** 클릭
+- 3개 모두 추가될 때까지 반복
+
+#### 3. GitHub Pages 활성화
 
 1. GitHub 저장소 페이지에서 **Settings** 클릭
 2. 왼쪽 메뉴에서 **Pages** 클릭
 3. **Source**에서 **GitHub Actions** 선택
 
-#### 3. 자동 배포
+#### 4. 자동 배포
 
 - `main` 브랜치에 push하면 자동으로 배포됩니다
+- GitHub Actions가 Secrets에서 API 키를 읽어 `config.js`를 자동 생성합니다
 - **Actions** 탭에서 배포 진행 상황 확인
 - 배포 완료 후 `https://YOUR_USERNAME.github.io/YOUR_REPO` 에서 확인
 
-### ⚠️ 배포 시 중요 사항
+### ✅ 작동 원리
 
-**보안 주의:**
-- `config.js` 파일은 `.gitignore`에 포함되어 Git에 커밋되지 않습니다
-- API 키는 절대 공개 저장소에 올리지 마세요
-- 배포된 사이트에서는 `config.js`를 별도로 설정해야 합니다
+**로컬 개발:**
+- `config.js` 파일을 직접 수정하여 사용
+- `.gitignore`로 인해 Git에 커밋되지 않음
 
-**배포 후 설정:**
-1. 배포된 사이트의 브라우저 콘솔에서 `config.js` 로드 오류 확인
-2. 로컬 `config.js` 파일을 안전한 방법으로 배포 환경에 추가
-3. 또는 환경 변수를 사용한 별도의 설정 방법 고려
+**GitHub Pages 배포:**
+- GitHub Actions가 자동 실행
+- Secrets에서 API 키를 읽어 `config.js` 생성
+- 생성된 파일과 함께 배포
+- **API 키가 코드 저장소에는 없지만, 배포된 사이트에서는 작동함**
+
+### ⚠️ 보안 주의사항
+
+- ✅ `config.js`는 Git에 커밋되지 않습니다
+- ✅ API 키는 GitHub Secrets로 안전하게 관리됩니다
+- ⚠️ 배포된 사이트의 JavaScript에서는 API 키가 노출됩니다 (브라우저에서 확인 가능)
+- 💡 Supabase는 Row Level Security (RLS)로 보호되므로 안전합니다
+- 💡 OpenAI API 키는 사용량 제한을 설정하는 것을 권장합니다
 
 ## 향후 개발 계획
 
