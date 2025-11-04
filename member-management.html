@@ -235,14 +235,35 @@
         let editingMemberId = null;
         let allMembers = [];
 
+        // Debug logging
+        console.log('=== Supabase 초기화 디버깅 ===');
+        console.log('window.APP_CONFIG:', window.APP_CONFIG);
+        console.log('SUPABASE_URL:', SUPABASE_URL);
+        console.log('SUPABASE_ANON_KEY:', SUPABASE_ANON_KEY ? '설정됨' : 'undefined');
+        console.log('window.supabase:', window.supabase);
+        console.log('조건 체크:');
+        console.log('  - SUPABASE_URL 존재:', !!SUPABASE_URL);
+        console.log('  - SUPABASE_ANON_KEY 존재:', !!SUPABASE_ANON_KEY);
+        console.log('  - YOUR_SUPABASE_URL 아님:', SUPABASE_URL !== 'YOUR_SUPABASE_URL');
+        console.log('  - YOUR_SUPABASE_ANON_KEY 아님:', SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY');
+
         // Initialize Supabase
         if (SUPABASE_URL && SUPABASE_ANON_KEY &&
             SUPABASE_URL !== 'YOUR_SUPABASE_URL' &&
             SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY') {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            loadMembers();
+
+            if (!window.supabase) {
+                console.error('❌ window.supabase가 로드되지 않았습니다!');
+                alert('Supabase 라이브러리가 로드되지 않았습니다. 페이지를 새로고침해주세요.');
+            } else {
+                console.log('✅ Supabase 초기화 시작');
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                console.log('✅ Supabase 클라이언트 생성 완료');
+                loadMembers();
+            }
         } else {
-            console.warn('Supabase configuration required');
+            console.warn('❌ Supabase configuration required - else로 빠짐');
+            console.warn('설정을 확인해주세요.');
         }
 
         // DOM elements
