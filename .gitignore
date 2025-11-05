@@ -7,4 +7,5 @@ dist
 
 # 환경설정 파일 (민감한 정보 포함)
 # GitHub Actions에서 Secrets로부터 자동 생성됨
-config.jsdata/
+config.js
+data/

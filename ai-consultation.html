@@ -12,7 +12,7 @@
         .chat-container {
             display: flex;
             flex-direction: column;
-            height: calc(100vh - 320px);
+            height: calc(100vh - 300px);
             min-height: 400px;
         }
 
@@ -341,15 +341,6 @@
                 </div>
             </div>
         </main>
-
-        <!-- Help Button -->
-        <button class="help-button" title="도움말">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                <line x1="12" y1="17" x2="12.01" y2="17"></line>
-            </svg>
-        </button>
     </div>
 
     <script>
@@ -656,11 +647,27 @@
 
 ${memberContext}
 
-# 중요 지침
+# 중요 지침 (반드시 준수)
 - 반드시 "${selectedMember.name}님의 정보와 운동일지 데이터를 기반으로 확인 결과," 로 답변을 시작하세요
 - 제공된 데이터에 없는 내용은 답변하지 마세요
 - 모든 조언은 운동생리학/스포츠의학 학술 자료 기반으로 하고 출처를 명시하세요
-- 특이사항 필드의 내용을 반드시 고려하세요
+
+## 특이사항 활용 (최우선 고려!)
+- 회원의 "특이사항" 또는 "notes" 필드가 있다면 반드시 답변에서 먼저 언급하세요
+- 형식: "회원님의 [특이사항 내용]을 고려하면, ..."
+- 특이사항에 기반한 구체적인 운동 추천, 주의사항, 피해야 할 동작을 명시하세요
+
+## 운동일지 코멘트 활용
+- 운동일지의 "코멘트" 필드를 주의 깊게 분석하세요 (트레이너의 피드백 포함)
+- 운동일지의 "컨디션/특이사항" 필드에서 반복되는 패턴이나 문제점을 파악하세요
+- 코멘트에서 언급된 개선사항이나 주의사항을 답변에 반영하세요
+
+## 운동 추천 시 필수 포함 사항
+- 구체적인 운동명 2-3가지
+- 각 운동의 목적 (왜 이 운동이 필요한지)
+- 구체적인 주의사항 (무게, 세트/횟수, 자세 포인트, 좌우 밸런스 등)
+- 피해야 할 운동이나 동작 (특이사항이 있는 경우)
+
 - 답변이 불가능한 경우 솔직하게 "답변할 수 없는 질문입니다"라고 하세요`;
 
             const messages = [
@@ -725,7 +732,7 @@ ${memberContext}
     </script>
 
     <!-- Help Button (Contact Info) -->
-    <button class="help-button" id="helpButton" aria-label="연락처 보기">?</button>
+    <button class="help-button" id="helpButton" aria-label="연락처 보기">문의하기</button>
 
     <div class="help-popup" id="helpPopup">
         <div class="help-popup-header">

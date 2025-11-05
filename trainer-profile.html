@@ -17,6 +17,7 @@
             display: grid;
             grid-template-columns: 320px 1fr;
             gap: 3rem;
+            margin-top: 3rem;
             margin-bottom: 3rem;
             padding: 2rem;
             background: var(--bg-white);
@@ -103,6 +104,43 @@
             background: var(--bg-gray);
             border-radius: var(--radius);
             border-left: 3px solid var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-contact {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .profile-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg-white);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .profile-contact-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-contact-icon {
+            font-size: 1.25rem;
+        }
+
+        .profile-contact-text {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+            font-weight: var(--font-weight-medium);
         }
 
         .section-card {
@@ -132,7 +170,7 @@
             vertical-align: middle;
         }
 
-        .education-item, .cert-item {
+        .education-item {
             padding: 1rem;
             border-left: 3px solid var(--primary);
             background: var(--bg-gray);
@@ -140,22 +178,128 @@
             margin-bottom: 1rem;
         }
 
-        .education-title, .cert-title {
+        .education-title {
             font-size: var(--font-size-base);
             font-weight: var(--font-weight-semibold);
             color: var(--text-primary);
             margin-bottom: 0.25rem;
         }
 
-        .education-date, .cert-date {
+        .education-date {
             font-size: var(--font-size-sm);
             color: var(--text-muted);
         }
 
-        .cert-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1rem;
+        /* Certificate Slider Styles */
+        .cert-slider-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cert-slider {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-lg);
+            background: var(--bg-gray);
+        }
+
+        .cert-slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .cert-slide {
+            min-width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .cert-image {
+            max-width: 100%;
+            max-height: 600px;
+            object-fit: contain;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-bottom: 1.5rem;
+        }
+
+        .cert-info {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-white);
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .cert-name {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .cert-date {
+            font-size: var(--font-size-sm);
+            color: var(--text-muted);
+        }
+
+        .cert-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .cert-nav:hover {
+            background: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .cert-nav.prev {
+            left: 1rem;
+        }
+
+        .cert-nav.next {
+            right: 1rem;
+        }
+
+        .cert-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .cert-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border-gray);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cert-indicator.active {
+            background: var(--primary);
+            width: 24px;
+            border-radius: 5px;
         }
 
         .program-phases {
@@ -223,10 +367,20 @@
     </style>
 </head>
 <body>
-    <div class="layout">
+    <div class="app-container">
         <aside class="sidebar">
             <div class="sidebar-header">
-                <h2 class="sidebar-title">이윤창 트레이너의<br>맞춤형 회원 관리 시스템</h2>
+                <div class="sidebar-logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                    </svg>
+                </div>
+                <div class="sidebar-title">
+                  <div class="sidebar-title-main">PT Manager</div>
+                  <div class="sidebar-title-sub">이윤창 트레이너의</div>
+                  <div class="sidebar-title-sub">맞춤형 회원 관리 시스템</div>
+                </div>
             </div>
 
             <nav class="sidebar-nav">
@@ -269,16 +423,12 @@
                 </a>
             </nav>
 
-            <footer class="sidebar-footer">
-                <p>© 2025 이윤창 트레이너의 PT Manager</p>
-            </footer>
+            <div class="sidebar-footer">
+              © 2025 이윤창 트레이너의 PT Manager
+            </div>
         </aside>
 
         <main class="main-content">
-            <div class="content-header">
-                <h1 class="page-title">트레이너 소개</h1>
-            </div>
-
             <div class="profile-container">
                 <!-- Hero Section -->
                 <div class="profile-hero">
@@ -286,7 +436,7 @@
                         <img src="images/trainer-profile.jpg" alt="이윤창 트레이너" class="profile-image">
                         <div class="profile-tags">
                             <div class="profile-tag">#운동전문가</div>
-                            <div class="profile-tag">#올직임전문가</div>
+                            <div class="profile-tag">#움직임전문가</div>
                             <div class="profile-tag">#해부학마스터</div>
                         </div>
                     </div>
@@ -302,6 +452,21 @@
 
                         <div class="profile-philosophy">
                             <strong>맞춤형 트레이닝으로, 건강한 변화를 이끌어 드립니다!</strong>
+                        </div>
+
+                        <div class="profile-contact">
+                            <a href="tel:010-5253-0489" class="profile-contact-item">
+                                <span class="profile-contact-icon">📞</span>
+                                <span class="profile-contact-text">010-5253-0489</span>
+                            </a>
+                            <a href="https://www.instagram.com/tr_helper_lee" target="_blank" rel="noopener noreferrer" class="profile-contact-item">
+                                <span class="profile-contact-icon">📷</span>
+                                <span class="profile-contact-text">@tr_helper_lee</span>
+                            </a>
+                            <a href="https://blog.naver.com/earnest0319" target="_blank" rel="noopener noreferrer" class="profile-contact-item">
+                                <span class="profile-contact-icon">✍️</span>
+                                <span class="profile-contact-text">earnest0319</span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -369,51 +534,105 @@
                 <!-- 주요 자격증 -->
                 <div class="section-card">
                     <h3 class="section-title">보유 자격증</h3>
-                    <div class="cert-grid">
-                        <div class="cert-item">
-                            <div class="cert-title">건강운동관리사</div>
-                            <div class="cert-date">2016.12 • 국민체육진흥공단</div>
+                    <div class="cert-slider-container">
+                        <div class="cert-slider">
+                            <div class="cert-slides" id="certSlides">
+                                <!-- Slide 1: 건강운동관리사 -->
+                                <div class="cert-slide">
+                                    <img src="images/certs/cert-health-manager.jpg" alt="건강운동관리사" class="cert-image">
+                                    <div class="cert-info">
+                                        <div class="cert-name">건강운동관리사</div>
+                                        <div class="cert-date">2016년 12월 • 국민체육진흥공단</div>
+                                    </div>
+                                </div>
+
+                                <!-- Slide 2: 2급 생활스포츠지도자 -->
+                                <div class="cert-slide">
+                                    <img src="images/certs/cert-sports-instructor-2.jpg" alt="2급 생활스포츠지도자" class="cert-image">
+                                    <div class="cert-info">
+                                        <div class="cert-name">2급 생활스포츠지도자 (취득예정증명)</div>
+                                        <div class="cert-date">2016년 7월 • 국민체육진흥공단</div>
+                                    </div>
+                                </div>
+
+                                <!-- Slide 3: AT 자격연수 -->
+                                <div class="cert-slide">
+                                    <img src="images/certs/cert-at.jpg" alt="AT 자격연수" class="cert-image">
+                                    <div class="cert-info">
+                                        <div class="cert-name">AT 자격연수 과정 수료</div>
+                                        <div class="cert-date">2016년 5월 • 대한선수트레이너협회</div>
+                                    </div>
+                                </div>
+
+                                <!-- Slide 4: 운동사 -->
+                                <div class="cert-slide">
+                                    <img src="images/certs/cert-exercise.jpg" alt="운동사" class="cert-image">
+                                    <div class="cert-info">
+                                        <div class="cert-name">운동사 자격</div>
+                                        <div class="cert-date">2016년 4월 • 대한운동교육평가원</div>
+                                    </div>
+                                </div>
+
+                                <!-- Slide 5: 생활스포츠지도사 (배드민턴) -->
+                                <div class="cert-slide">
+                                    <img src="images/certs/cert-badminton.jpg" alt="생활스포츠지도사" class="cert-image">
+                                    <div class="cert-info">
+                                        <div class="cert-name">2급 생활스포츠지도사 (배드민턴)</div>
+                                        <div class="cert-date">2014년 8월</div>
+                                    </div>
+                                </div>
+
+                                <!-- Slide 6: 스포츠마사지 -->
+                                <div class="cert-slide">
+                                    <img src="images/certs/cert-sports-massage.jpg" alt="스포츠마사지" class="cert-image">
+                                    <div class="cert-info">
+                                        <div class="cert-name">스포츠마사지 1급</div>
+                                        <div class="cert-date">2013년 12월 • 한국스포츠과학교육협회</div>
+                                    </div>
+                                </div>
+
+                                <!-- Slide 7: Trigger Point -->
+                                <div class="cert-slide">
+                                    <img src="images/certs/cert-trigger-point.jpg" alt="Trigger Point Therapy" class="cert-image">
+                                    <div class="cert-info">
+                                        <div class="cert-name">Trigger Point Therapy</div>
+                                        <div class="cert-date">2015년 2월 • Ultimate Six</div>
+                                    </div>
+                                </div>
+
+                                <!-- Slide 8: 유소년체육지도사 -->
+                                <div class="cert-slide">
+                                    <img src="images/certs/cert-youth.jpg" alt="유소년체육지도사" class="cert-image">
+                                    <div class="cert-info">
+                                        <div class="cert-name">유소년체육지도사 1급</div>
+                                        <div class="cert-date">2013년 11월</div>
+                                    </div>
+                                </div>
+
+                                <!-- Slide 9: 에너지코칭 -->
+                                <div class="cert-slide">
+                                    <img src="images/certs/cert-energy-coaching.jpg" alt="에너지코칭" class="cert-image">
+                                    <div class="cert-info">
+                                        <div class="cert-name">에너지코칭 2급</div>
+                                        <div class="cert-date">2013년 6월 • 한국코칭리더십교육협회</div>
+                                    </div>
+                                </div>
+
+                                <!-- Slide 10: KCA 코치 -->
+                                <div class="cert-slide">
+                                    <img src="images/certs/cert-kca.jpg" alt="KCA 코치" class="cert-image">
+                                    <div class="cert-info">
+                                        <div class="cert-name">KCA 전문코치 2급</div>
+                                        <div class="cert-date">2013년 6월 • 한국코칭학회</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button class="cert-nav prev" onclick="moveCertSlide(-1)">‹</button>
+                            <button class="cert-nav next" onclick="moveCertSlide(1)">›</button>
                         </div>
-                        <div class="cert-item">
-                            <div class="cert-title">2급 생활스포츠지도자</div>
-                            <div class="cert-date">2016.07 • 국민체육진흥공단</div>
-                        </div>
-                        <div class="cert-item">
-                            <div class="cert-title">생활체육지도자 2급</div>
-                            <div class="cert-date">2016.11</div>
-                        </div>
-                        <div class="cert-item">
-                            <div class="cert-title">운동사 자격</div>
-                            <div class="cert-date">2016.04 • 대한운동교육평가원</div>
-                        </div>
-                        <div class="cert-item">
-                            <div class="cert-title">2급 생활스포츠지도사 (배드민턴)</div>
-                            <div class="cert-date">2014.08</div>
-                        </div>
-                        <div class="cert-item">
-                            <div class="cert-title">스포츠마사지 1급</div>
-                            <div class="cert-date">2013.12 • 한국스포츠과학교육협회</div>
-                        </div>
-                        <div class="cert-item">
-                            <div class="cert-title">유소년체육지도사 1급</div>
-                            <div class="cert-date">2013.11</div>
-                        </div>
-                        <div class="cert-item">
-                            <div class="cert-title">에너지코칭 2급</div>
-                            <div class="cert-date">2013.06 • 한국코칭리더십교육협회</div>
-                        </div>
-                        <div class="cert-item">
-                            <div class="cert-title">KCA 전문코치 2급</div>
-                            <div class="cert-date">2013.06 • 한국코칭학회</div>
-                        </div>
-                        <div class="cert-item">
-                            <div class="cert-title">Trigger Point Therapy</div>
-                            <div class="cert-date">2015.02 • Ultimate Six</div>
-                        </div>
-                        <div class="cert-item">
-                            <div class="cert-title">AT 자격연수 과정</div>
-                            <div class="cert-date">2016.05 • 대한선수트레이너협회</div>
-                        </div>
+
+                        <div class="cert-indicators" id="certIndicators"></div>
                     </div>
                 </div>
 
@@ -432,7 +651,7 @@
     </div>
 
     <!-- Help Button (Contact Info) -->
-    <button class="help-button" id="helpButton" aria-label="연락처 보기">?</button>
+    <button class="help-button" id="helpButton" aria-label="연락처 보기">문의하기</button>
 
     <div class="help-popup" id="helpPopup">
         <div class="help-popup-header">
@@ -483,6 +702,46 @@
     </div>
 
     <script>
+        // Certificate Slider
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.cert-slide');
+        const totalSlides = slides.length;
+        const slidesContainer = document.getElementById('certSlides');
+        const indicatorsContainer = document.getElementById('certIndicators');
+
+        // Create indicators
+        for (let i = 0; i < totalSlides; i++) {
+            const indicator = document.createElement('div');
+            indicator.className = 'cert-indicator';
+            indicator.onclick = () => goToSlide(i);
+            indicatorsContainer.appendChild(indicator);
+        }
+
+        function updateSlider() {
+            slidesContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+            // Update indicators
+            const indicators = document.querySelectorAll('.cert-indicator');
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function moveCertSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = totalSlides - 1;
+            if (currentSlide >= totalSlides) currentSlide = 0;
+            updateSlider();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+
+        // Initialize
+        updateSlider();
+
         // Help button toggle
         const helpButton = document.getElementById('helpButton');
         const helpPopup = document.getElementById('helpPopup');

@@ -850,31 +850,6 @@ body {
   color: var(--text-muted);
 }
 
-/* Help Button (bottom right) */
-.help-button {
-  position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  width: 48px;
-  height: 48px;
-  background-color: var(--text-primary);
-  color: white;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-lg);
-  transition: all 0.2s;
-  z-index: 100;
-}
-
-.help-button:hover {
-  transform: scale(1.1);
-  box-shadow: var(--shadow-xl);
-}
-
 /* Action Bar */
 .action-bar {
   display: flex;
@@ -926,11 +901,10 @@ body {
 
 .help-button {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 50px;
   background: var(--sidebar-bg);
   color: white;
   border: none;
@@ -939,9 +913,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 14px;
+  font-weight: 600;
   transition: all 0.2s ease;
   z-index: 999;
+  white-space: nowrap;
 }
 
 .help-button:hover {
