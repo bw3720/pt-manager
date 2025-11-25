@@ -260,17 +260,20 @@
 
             try {
                 const { data, error } = await supabase
-                    .from('members')
-                    .select('id, name')
-                    .order('name', { ascending: true });
+                    .from('member')
+                    .select(`
+                        member_id,
+                        users!inner(name)
+                    `)
+                    .order('users(name)', { ascending: true });
 
                 if (error) throw error;
 
                 memberSelect.innerHTML = '<option value="">회원을 선택하세요</option>';
                 data.forEach(member => {
                     const option = document.createElement('option');
-                    option.value = member.id;
-                    option.textContent = member.name;
+                    option.value = member.member_id;
+                    option.textContent = member.users.name;
                     memberSelect.appendChild(option);
                 });
             } catch (error) {
