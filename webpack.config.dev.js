@@ -7,7 +7,16 @@ module.exports = merge(common, {
   devServer: {
     liveReload: true,
     hot: true,
-    open: true,
-    static: ['./'],
+    open: ['/src/pages/index.html'],
+    static: [
+      {
+        directory: './',
+        publicPath: '/',
+      },
+      {
+        directory: './src',
+        publicPath: '/',
+      }
+    ],
   },
 });
