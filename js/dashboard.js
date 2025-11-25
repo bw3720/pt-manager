@@ -24,6 +24,9 @@
     let miniMonth = new Date().getMonth();
     let selectedDate = new Date();
 
+    // Week offset (0 = current week, -1 = last week, 1 = next week)
+    let weekOffset = 0;
+
     // Initialize dashboard
     async function init() {
         // Run all data loading in parallel for better performance
@@ -41,6 +44,7 @@
         setupMiniCalendarEvents();
         setupHelpButton();
         setupReminderEvents();
+        setupWeekNavigation();
     }
 
     // Load statistics
@@ -106,12 +110,12 @@
             return;
         }
 
-        // Get current week (Monday to Sunday)
+        // Get current week (Monday to Sunday) with week offset
         const today = new Date();
         const currentDay = today.getDay();
         const diff = currentDay === 0 ? -6 : 1 - currentDay; // Adjust to Monday
         const monday = new Date(today);
-        monday.setDate(today.getDate() + diff);
+        monday.setDate(today.getDate() + diff + (weekOffset * 7)); // Apply week offset
 
         const weekDays = [];
         const dayNames = ['월', '화', '수', '목', '금', '토', '일'];
@@ -120,6 +124,34 @@
             const day = new Date(monday);
             day.setDate(monday.getDate() + i);
             weekDays.push(day);
+        }
+
+        // Update week title with date range
+        const weekTitle = document.getElementById('weekTitle');
+        if (weekTitle) {
+            const startDate = weekDays[0];
+            const endDate = weekDays[6];
+            const startMonth = startDate.getMonth() + 1;
+            const startDay = startDate.getDate();
+            const endMonth = endDate.getMonth() + 1;
+            const endDay = endDate.getDate();
+
+            let dateRangeStr;
+            if (startMonth === endMonth) {
+                // Same month
+                dateRangeStr = `${startMonth}/${startDay}~${endDay}`;
+            } else {
+                // Different months
+                dateRangeStr = `${startMonth}/${startDay}~${endMonth}/${endDay}`;
+            }
+
+            if (weekOffset === 0) {
+                weekTitle.textContent = `이번주 예약 현황 (${dateRangeStr})`;
+            } else if (weekOffset < 0) {
+                weekTitle.textContent = `${Math.abs(weekOffset)}주 전 예약 현황 (${dateRangeStr})`;
+            } else {
+                weekTitle.textContent = `${weekOffset}주 후 예약 현황 (${dateRangeStr})`;
+            }
         }
 
         // Update table headers with dates
@@ -154,6 +186,8 @@
                         member_id,
                         session_total_count,
                         session_used_count,
+                        session_start_date,
+                        session_end_date,
                         users!inner(name)
                     )
                 `)
@@ -237,6 +271,7 @@
         // Time slots from 09:00 to 22:00
         for (let hour = 9; hour <= 22; hour++) {
             const row = document.createElement('tr');
+            const isEarlyHour = hour <= 11; // First 3 hours: 9, 10, 11
 
             // Time cell
             const timeCell = document.createElement('td');
@@ -270,6 +305,38 @@
                     const total = reservation.calculated_total ?? reservation.member.session_total_count;
 
                     cell.textContent = `${reservation.member.users.name} (${remaining}/${total})`;
+                    // Create tooltip
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'session-tooltip';
+
+                    const startDate = reservation.member.session_start_date
+                        ? new Date(reservation.member.session_start_date).toLocaleDateString('ko-KR', { year: 'numeric', month: 'numeric', day: 'numeric' })
+                        : '미설정';
+                    const endDate = reservation.member.session_end_date
+                        ? new Date(reservation.member.session_end_date).toLocaleDateString('ko-KR', { year: 'numeric', month: 'numeric', day: 'numeric' })
+                        : '미설정';
+
+                    tooltip.innerHTML = `
+                        <div class="session-tooltip-row">
+                            <span class="session-tooltip-label">전체 세션:</span>
+                            <span class="session-tooltip-value">${total}회</span>
+                        </div>
+                        <div class="session-tooltip-row">
+                            <span class="session-tooltip-label">잔여 세션:</span>
+                            <span class="session-tooltip-value">${remaining}회</span>
+                        </div>
+                        <div class="session-tooltip-row">
+                            <span class="session-tooltip-label">시작일:</span>
+                            <span class="session-tooltip-value">${startDate}</span>
+                        </div>
+                        <div class="session-tooltip-row">
+                            <span class="session-tooltip-label">종료일:</span>
+                            <span class="session-tooltip-value">${endDate}</span>
+                        </div>
+                    `;
+
+                    cell.textContent = `${reservation.member.users.name} (${remaining}/${total})`;
+                    cell.appendChild(tooltip);
                     cell.style.cursor = 'pointer';
                     cell.addEventListener('click', () => handleReservationClick(reservation));
                 } else {
@@ -896,6 +963,27 @@
         // Prevent popup click from closing
         helpPopup.addEventListener('click', (e) => {
             e.stopPropagation();
+        });
+    }
+
+    // Setup week navigation
+    function setupWeekNavigation() {
+        const prevWeekBtn = document.getElementById('prevWeekBtn');
+        const nextWeekBtn = document.getElementById('nextWeekBtn');
+
+        if (!prevWeekBtn || !nextWeekBtn) {
+            console.error('Week navigation buttons not found');
+            return;
+        }
+
+        prevWeekBtn.addEventListener('click', () => {
+            weekOffset--;
+            renderWeeklySchedule();
+        });
+
+        nextWeekBtn.addEventListener('click', () => {
+            weekOffset++;
+            renderWeeklySchedule();
         });
     }
 
