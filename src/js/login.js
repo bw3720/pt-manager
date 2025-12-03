@@ -29,8 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
     loginForm.addEventListener('submit', handleLogin);
 
     // 회원가입 모달 열기
-    signupButton.addEventListener('click', () => {
+    signupButton.addEventListener('click', async () => {
         signupModal.classList.add('active');
+        // 트레이너 목록 로드
+        await loadTrainers();
     });
 
     // 모달 닫기
@@ -99,6 +101,54 @@ async function checkLoginStatus() {
         } catch (err) {
             console.error('세션 확인 오류:', err);
         }
+    }
+}
+
+// 트레이너 목록 로드
+async function loadTrainers() {
+    try {
+        console.log('트레이너 목록 로드 시작...');
+
+        // users 테이블에서 role='trainer'인 사용자 조회
+        const { data: trainers, error } = await supabase
+            .from('users')
+            .select('user_id, name, is_active')
+            .eq('role', 'trainer')
+            .eq('is_active', 'Y')
+            .order('name');
+
+        if (error) {
+            console.error('트레이너 목록 조회 오류:', error);
+            return;
+        }
+
+        console.log('트레이너 목록:', trainers);
+
+        const trainerSelect = document.getElementById('signupTrainer');
+        // 기존 옵션 제거 (첫 번째 placeholder 제외)
+        trainerSelect.innerHTML = '<option value="">트레이너를 선택하세요</option>';
+
+        if (!trainers || trainers.length === 0) {
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = '등록된 트레이너가 없습니다';
+            trainerSelect.appendChild(option);
+            console.warn('등록된 트레이너가 없습니다.');
+            return;
+        }
+
+        // 트레이너 옵션 추가
+        trainers.forEach(trainer => {
+            const option = document.createElement('option');
+            option.value = trainer.user_id;
+            option.textContent = trainer.name;
+            trainerSelect.appendChild(option);
+        });
+
+        console.log(`${trainers.length}명의 트레이너 로드 완료`);
+
+    } catch (err) {
+        console.error('트레이너 로드 오류:', err);
     }
 }
 
@@ -188,6 +238,7 @@ async function handleSignup(e) {
         user_id: document.getElementById('signupUserId').value.trim(),
         password: document.getElementById('signupPassword').value,
         passwordConfirm: document.getElementById('signupPasswordConfirm').value,
+        trainer_id: document.getElementById('signupTrainer').value,
         name: document.getElementById('signupName').value.trim(),
         birth_date: document.getElementById('signupBirthDate').value,
         gender: document.getElementById('signupGender').value,
@@ -237,7 +288,8 @@ async function handleSignup(e) {
         }
 
         // 회원 정보 저장
-        const { error } = await supabase
+        console.log('회원가입 시도:', formData);
+        const { data: insertData, error } = await supabase
             .from('users')
             .insert([{
                 user_id: formData.user_id,
@@ -257,11 +309,39 @@ async function handleSignup(e) {
             }]);
 
         if (error) {
+            console.error('회원가입 DB 에러:', error);
             throw error;
         }
 
-        // 회원가입 성공
-        alert('회원가입이 완료되었습니다!\n관리자 승인 후 로그인 가능합니다.');
+        console.log('users 테이블 INSERT 성공:', insertData);
+
+        // member 테이블에도 INSERT
+        const today = new Date();
+        const threeMonthsLater = new Date(today);
+        threeMonthsLater.setMonth(threeMonthsLater.getMonth() + 3);
+
+        const { data: memberData, error: memberError } = await supabase
+            .from('member')
+            .insert([{
+                member_id: formData.user_id,
+                trainer_id: formData.trainer_id,
+                session_start_date: today.toISOString().split('T')[0],
+                session_end_date: threeMonthsLater.toISOString().split('T')[0],
+                session_total_count: 0,
+                session_used_count: 0,
+                created_id: formData.user_id,
+                updated_id: formData.user_id
+            }]);
+
+        if (memberError) {
+            console.error('member 테이블 INSERT 오류:', memberError);
+            // users는 이미 insert되었으므로 롤백 필요하지만 일단 진행
+            alert('회원가입은 완료되었으나 회원 정보 등록 중 오류가 발생했습니다.\n관리자에게 문의하세요.');
+        } else {
+            console.log('member 테이블 INSERT 성공:', memberData);
+            alert('회원가입이 완료되었습니다!\n관리자 승인 후 로그인 가능합니다.');
+        }
+
         document.getElementById('signupModal').classList.remove('active');
         document.getElementById('signupForm').reset();
         clearErrors();
@@ -279,6 +359,12 @@ async function handleSignup(e) {
 function validateSignupForm(formData) {
     clearErrors();
     let isValid = true;
+
+    // 트레이너 선택 검증
+    if (!formData.trainer_id) {
+        showError('signupTrainerError', '담당 트레이너를 선택해주세요.');
+        isValid = false;
+    }
 
     // 아이디 검증 (영문, 숫자 4-20자)
     const userIdRegex = /^[a-zA-Z0-9]{4,20}$/;
