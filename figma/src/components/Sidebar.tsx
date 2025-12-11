@@ -22,7 +22,6 @@ export function Sidebar({ currentTab, onTabChange }: SidebarProps) {
           </div>
           <div>
             <div className="sidebar-title-main">PT Manager</div>
-            <div className="sidebar-title-sub">이윤창 트레이너의</div>
             <div className="sidebar-title-sub">맞춤형 회원 관리 시스템</div>
           </div>
         </div>
@@ -52,7 +51,7 @@ export function Sidebar({ currentTab, onTabChange }: SidebarProps) {
 
       <div className="p-4 border-t border-slate-800">
         <div className="text-slate-400 text-xs text-center">
-          © 2025 이윤창 트레이너의 PT Manager
+          © 2025 PT Manager
         </div>
       </div>
     </div>

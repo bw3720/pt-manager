@@ -62,6 +62,8 @@ function setupEventListeners() {
     // Setup table input listeners for dynamically added rows
     document.getElementById('exerciseTableBody').addEventListener('input', updatePreview);
     document.getElementById('referenceList').addEventListener('input', updatePreview);
+
+    // Logout is now handled by sidebar.js
 }
 
 // Add exercise row

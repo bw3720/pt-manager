@@ -2,9 +2,12 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <!-- Auth 체크를 위해 가장 먼저 로드 -->
+    <script src="../js/auth.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>대시보드 - 이윤창 트레이너의 PT Manager</title>
+    <title>대시보드 - PT Manager</title>
     <link rel="stylesheet" href="../css/design-system.css">
+    <script src="../js/sidebar.js"></script>
     <script src="../js/dark-mode.js"></script>
     <script src="../../config/config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1133,93 +1136,7 @@
 
     <div class="app-container">
         <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-logo">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
-                    </svg>
-                </div>
-                <div class="sidebar-title">
-                  <div class="sidebar-title-main">PT Manager</div>
-                  <div class="sidebar-title-sub">이윤창 트레이너의</div>
-                  <div class="sidebar-title-sub">맞춤형 회원 관리 시스템</div>
-                </div>
-            </div>
-
-            <nav class="sidebar-nav">
-                <a href="dashboard.html" class="nav-item active">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="7" height="7"></rect>
-                        <rect x="14" y="3" width="7" height="7"></rect>
-                        <rect x="14" y="14" width="7" height="7"></rect>
-                        <rect x="3" y="14" width="7" height="7"></rect>
-                    </svg>
-                    대시보드
-                </a>
-                <a href="main.html" class="nav-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                    트레이너 소개
-                </a>
-                <a href="members.html" class="nav-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="9" cy="7" r="4"></circle>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87m-4-12a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                    회원 관리
-                </a>
-                <a href="members2.html" class="nav-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="10" width="18" height="12" rx="2"></rect>
-                        <path d="M7 10V6a5 5 0 0 1 10 0v4"></path>
-                        <line x1="9" y1="16" x2="9" y2="16"></line>
-                        <line x1="15" y1="16" x2="15" y2="16"></line>
-                    </svg>
-                    회원 관리2
-                </a>
-                <a href="workout-entry.html" class="nav-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-                        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
-                    </svg>
-                    운동일지 작성
-                </a>
-                <a href="workout-entry2.html" class="nav-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                        <polyline points="14 2 14 8 20 8"></polyline>
-                        <line x1="16" y1="13" x2="8" y2="13"></line>
-                        <line x1="16" y1="17" x2="8" y2="17"></line>
-                        <polyline points="10 9 9 9 8 9"></polyline>
-                    </svg>
-                    운동일지 작성2
-                </a>
-                <a href="workout-history.html" class="nav-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
-                    운동일지 조회
-                </a>
-                <a href="ai-consultation.html" class="nav-item">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    AI 상담
-                </a>
-            </nav>
-
-            <div class="sidebar-footer">
-              © 2025 이윤창 트레이너의 PT Manager
-            </div>
-        </aside>
+        <aside class="sidebar"></aside>
 
         <main class="main-content">
             <div class="content-wrapper">
@@ -1404,7 +1321,7 @@
         <div class="help-popup-header">
             <div class="help-popup-icon">이</div>
             <div class="help-popup-title">
-                <h3>이윤창 트레이너</h3>
+                <h3>트레이너</h3>
                 <p>문의하기</p>
             </div>
         </div>

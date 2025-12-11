@@ -645,6 +645,7 @@
     // Setup event listeners
     function setupEventListeners() {
         // No calendar navigation needed anymore
+        // Logout is now handled by sidebar.js
     }
 
     // Check for members with low sessions
